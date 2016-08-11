@@ -48,10 +48,12 @@ namespace WorkRemind
             this._remindtimer.Elapsed += (a, b) =>
             {
                 this._remindtimer.Stop();
+                // TODO 可能出现时间差导致timer刚刚运行，更改的内容在clear()之后
+                this._timer.Stop();
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.btnstart.Content = "开始";
-                    this.Visibility = Visibility.Visible;
+                    //this.Visibility = Visibility.Visible;
                     this.texth.Clear();
                     this.textm.Clear();
                     this.texts.Clear();
@@ -71,6 +73,7 @@ namespace WorkRemind
                  st.Begin();
                  st.Completed += (n, m) =>
                  {
+                     if (string.IsNullOrEmpty(this.texth.Text) || string.IsNullOrEmpty(this.textm.Text) || string.IsNullOrEmpty(this.texts.Text)) return;
                      this.btnstart.Content = "最小化";
                      this._countdown = this._startime.AddHours(9) - DateTime.Now;
                      this._timer.Start();
