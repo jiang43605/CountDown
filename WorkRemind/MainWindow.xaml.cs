@@ -25,6 +25,7 @@ namespace WorkRemind
         System.Windows.Forms.NotifyIcon notifyicon = new System.Windows.Forms.NotifyIcon();
         Timer _timer = new Timer(1000);
         Timer _remindtimer = new Timer();
+        Timer _autominitimer = new Timer(1000 * 5);
         TimeSpan _countdown;
         DateTime _startime;
         public MainWindow()
@@ -52,14 +53,26 @@ namespace WorkRemind
                 this._timer.Stop();
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    this.btnstart.Content = "开始";
-                    //this.Visibility = Visibility.Visible;
+                    this.btnstart.Content = Properties.Resources.BtnstartBegin;
                     this.texth.Clear();
                     this.textm.Clear();
                     this.texts.Clear();
                 }));
-                this.notifyicon.ShowBalloonTip(1, "提醒", "下班啦！下班啦！下班啦！下班啦！下班啦！下班啦！下班啦！", System.Windows.Forms.ToolTipIcon.None);
-                MessageBox.Show("请注意！你现在可以下班了！");
+                this.notifyicon.ShowBalloonTip(1, Properties.Resources.BalloonTipTitle, Properties.Resources.BalloonTipText, System.Windows.Forms.ToolTipIcon.None);
+                MessageBox.Show(Properties.Resources.MessageBoxShow);
+            };
+
+            this._autominitimer.Elapsed += (a, b) =>
+            {
+                this._autominitimer.Stop();
+                if (!this._autominitimer.Flag(nameof(_autominitimer))) return;
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    this.lbworkstart.Content = this._startime.ToString("HH:mm:ss");
+                    this.lbworkend.Content = this._startime.AddHours(9).ToString("HH:mm:ss");
+                    var st = this.Resources["TransMiniModel"] as Storyboard;
+                    st.Begin();
+                }));
             };
         }
         private void NotifyIcoInit()
@@ -68,21 +81,22 @@ namespace WorkRemind
             this.notifyicon.ContextMenu = new System.Windows.Forms.ContextMenu();
             Action<object, EventArgs> timeevent = (a, b) =>
              {
+                 grid_MouseRightButtonUp(null, null);
                  var st = this.Resources["Normal"] as Storyboard;
                  this.Visibility = Visibility.Visible;
-                 st.Begin();
                  st.Completed += (n, m) =>
                  {
                      if (string.IsNullOrEmpty(this.texth.Text) || string.IsNullOrEmpty(this.textm.Text) || string.IsNullOrEmpty(this.texts.Text)) return;
-                     this.btnstart.Content = "最小化";
+                     this.btnstart.Content = Properties.Resources.BtnstartMini;
                      this._countdown = this._startime.AddHours(9) - DateTime.Now;
                      this._timer.Start();
                  };
+                 st.Begin();
              };
             this.notifyicon.ContextMenu.MenuItems.Add("time", new EventHandler(timeevent));
             this.notifyicon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(timeevent);
             this.notifyicon.ContextMenu.MenuItems.Add("exit", (o, e) => Window_Closed(null, null));
-            this.notifyicon.Text = "下班提醒服务正在运行...";
+            this.notifyicon.Text = Properties.Resources.NotifyiconText;
             this.notifyicon.Visible = true;
         }
 
@@ -124,17 +138,17 @@ namespace WorkRemind
         {
             try
             {
-                if (this.btnstart.Content as string == "最小化")
+                if (this.btnstart.Content as string == Properties.Resources.BtnstartMini)
                 {
+                    this._autominitimer.ForceStop(nameof(this._autominitimer));
                     var sb = this.Resources["Mini"] as Storyboard;
-                    sb.Begin();
                     sb.Completed += (a, b) =>
                     {
-                        this.btnstart.Content = "开始";
+                        //this.btnstart.Content = Properties.Resources.BtnstartBegin;
                         this._timer.Stop();
                         this.Visibility = Visibility.Hidden;
-                        //this.notifyicon.ShowBalloonTip(1, "提醒", "提醒服务最小化在任务栏运行", System.Windows.Forms.ToolTipIcon.Info);
                     };
+                    sb.Begin();
                     return;
                 }
 
@@ -147,7 +161,7 @@ namespace WorkRemind
 
                 if (time.Value.AddHours(9) <= DateTime.Now)
                 {
-                    MessageBox.Show("你已经可以下班啦！");
+                    MessageBox.Show(Properties.Resources.MessageBoxShowAlreadyOff);
                     return;
                 }
 
@@ -157,12 +171,37 @@ namespace WorkRemind
                 this._timer.Start();
                 this._remindtimer.Start();
 
-                this.btnstart.Content = "最小化";
+                this.btnstart.Content = Properties.Resources.BtnstartMini;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (this.grid3.Visibility == Visibility.Visible) return;
+            if (string.IsNullOrEmpty(this.texth.Text) || string.IsNullOrEmpty(this.textm.Text) || string.IsNullOrEmpty(this.texts.Text)) return;
+            if (this.grid.IsMouseOver) return;
+            this._autominitimer.ForceStart(nameof(this._autominitimer));
+            this._timer.Start();
+            this.SetReadOnly(true);
+        }
+
+        private void grid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var st = this.Resources["TransMiniModel"] as Storyboard;
+            st.Seek(TimeSpan.FromSeconds(0)); st.Stop();
+            this._autominitimer.ForceStop(nameof(this._autominitimer));
+            this.SetReadOnly(false);
+        }
+
+        private void SetReadOnly(bool status)
+        {
+            this.texth.IsReadOnly = status;
+            this.textm.IsReadOnly = status;
+            this.texts.IsReadOnly = status;
         }
     }
 }

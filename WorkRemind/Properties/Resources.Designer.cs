@@ -61,12 +61,75 @@ namespace WorkRemind.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 下班啦！下班啦！下班啦！下班啦！下班啦！下班啦！下班啦！.
+        /// </summary>
+        internal static string BalloonTipText {
+            get {
+                return ResourceManager.GetString("BalloonTipText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 提醒.
+        /// </summary>
+        internal static string BalloonTipTitle {
+            get {
+                return ResourceManager.GetString("BalloonTipTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 开始.
+        /// </summary>
+        internal static string BtnstartBegin {
+            get {
+                return ResourceManager.GetString("BtnstartBegin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 最小化.
+        /// </summary>
+        internal static string BtnstartMini {
+            get {
+                return ResourceManager.GetString("BtnstartMini", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon ico {
             get {
                 object obj = ResourceManager.GetObject("ico", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请注意！你现在可以下班了！.
+        /// </summary>
+        internal static string MessageBoxShow {
+            get {
+                return ResourceManager.GetString("MessageBoxShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 你已经可以下班啦！.
+        /// </summary>
+        internal static string MessageBoxShowAlreadyOff {
+            get {
+                return ResourceManager.GetString("MessageBoxShowAlreadyOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 下班提醒服务正在运行....
+        /// </summary>
+        internal static string NotifyiconText {
+            get {
+                return ResourceManager.GetString("NotifyiconText", resourceCulture);
             }
         }
     }

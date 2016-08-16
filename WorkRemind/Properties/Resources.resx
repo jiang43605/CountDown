@@ -117,8 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BalloonTipText" xml:space="preserve">
+    <value>下班啦！下班啦！下班啦！下班啦！下班啦！下班啦！下班啦！</value>
+  </data>
+  <data name="BalloonTipTitle" xml:space="preserve">
+    <value>提醒</value>
+  </data>
+  <data name="BtnstartBegin" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="BtnstartMini" xml:space="preserve">
+    <value>最小化</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ico" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\sync.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MessageBoxShow" xml:space="preserve">
+    <value>请注意！你现在可以下班了！</value>
+  </data>
+  <data name="MessageBoxShowAlreadyOff" xml:space="preserve">
+    <value>你已经可以下班啦！</value>
+  </data>
+  <data name="NotifyiconText" xml:space="preserve">
+    <value>下班提醒服务正在运行...</value>
   </data>
 </root>
