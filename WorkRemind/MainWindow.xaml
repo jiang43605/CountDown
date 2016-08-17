@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkRemind"
         mc:Ignorable="d"
-        Title="MainWindow" Height="100" Width="400" WindowStartupLocation="CenterScreen" WindowStyle="None" Loaded="Window_Loaded" Background="{x:Null}" ResizeMode="NoResize" AllowsTransparency="True" Closed="Window_Closed" BorderBrush="#FF5179C1" Topmost="True" >
+        Title="MainWindow" Height="100" Width="400" WindowStartupLocation="CenterScreen" WindowStyle="None" Loaded="Window_Loaded" Background="{x:Null}" ResizeMode="NoResize" AllowsTransparency="True" Closed="Window_Closed" BorderBrush="#FF5179C1" Topmost="True" ShowInTaskbar="False" >
     <Window.Resources>
         <Style TargetType="TextBox" x:Key="time">
             <Style.Setters>
@@ -20,6 +20,11 @@
                 <Setter Property="BorderBrush" Value="#FF93999D"/>
                 <Setter Property="CaretBrush" Value="#FF93999D"/>
             </Style.Setters>
+            <Style.Triggers>
+                <!--<Trigger Property="IsEnabled" Value="true">
+                    <Setter Property="Foreground" Value="#FF93999D"/>
+                </Trigger>-->
+            </Style.Triggers>
         </Style>
         <Style TargetType="Label" x:Key="dot">
             <Setter Property="Padding" Value="0" />

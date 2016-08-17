@@ -1,25 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WorkRemind
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
         System.Windows.Forms.NotifyIcon notifyicon = new System.Windows.Forms.NotifyIcon();
@@ -41,7 +28,8 @@ namespace WorkRemind
             this._timer.Elapsed += (a, b) =>
             {
                 if (this._countdown.TotalSeconds == 0) { this._timer.Stop(); return; }
-                this._countdown = this._countdown.Add(TimeSpan.FromSeconds(-1));
+                // 纠正时间不准确
+                this._countdown = this._startime.AddHours(9) - DateTime.Now;//this._countdown.Add(TimeSpan.FromSeconds(-1));
                 var datetime = DateTime.Parse($"{this._countdown.Hours}:{this._countdown.Minutes}:{this._countdown.Seconds}");
                 SetTxtTime(datetime);
             };
@@ -51,6 +39,8 @@ namespace WorkRemind
                 this._remindtimer.Stop();
                 // TODO 可能出现时间差导致timer刚刚运行，更改的内容在clear()之后
                 this._timer.Stop();
+                // 恢复原状
+                grid_MouseRightButtonUp(null, null);
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.btnstart.Content = Properties.Resources.BtnstartBegin;
@@ -144,7 +134,6 @@ namespace WorkRemind
                     var sb = this.Resources["Mini"] as Storyboard;
                     sb.Completed += (a, b) =>
                     {
-                        //this.btnstart.Content = Properties.Resources.BtnstartBegin;
                         this._timer.Stop();
                         this.Visibility = Visibility.Hidden;
                     };
@@ -182,6 +171,7 @@ namespace WorkRemind
         private void grid_MouseLeave(object sender, MouseEventArgs e)
         {
             if (this.grid3.Visibility == Visibility.Visible) return;
+            if (this.btnstart.Content as string != Properties.Resources.BtnstartMini) return;
             if (string.IsNullOrEmpty(this.texth.Text) || string.IsNullOrEmpty(this.textm.Text) || string.IsNullOrEmpty(this.texts.Text)) return;
             if (this.grid.IsMouseOver) return;
             this._autominitimer.ForceStart(nameof(this._autominitimer));
@@ -193,7 +183,7 @@ namespace WorkRemind
         {
             var st = this.Resources["TransMiniModel"] as Storyboard;
             st.Seek(TimeSpan.FromSeconds(0)); st.Stop();
-            this._autominitimer.ForceStop(nameof(this._autominitimer));
+            // this._autominitimer.ForceStop(nameof(this._autominitimer));
             this.SetReadOnly(false);
         }
 
