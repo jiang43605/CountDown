@@ -13,5 +13,29 @@ namespace WorkRemind
     /// </summary>
     public partial class App : Application
     {
+        public void App_Startup(object sender, StartupEventArgs e)
+        {
+            var win = new MainWindow();
+
+            if (e.Args.Length > 0)
+            {
+                string file = e.Args[0];
+                if (file == "i")
+                {
+                    //win.Show();
+                    win.Show();
+                }
+                else
+                {
+                    Console.Write("das");
+                    MessageBox.Show("aa");
+                    win.Close();
+                }
+            }
+            else
+            {
+                win.Show();
+            }
+        }
     }
 }

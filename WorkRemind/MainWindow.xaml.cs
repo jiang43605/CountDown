@@ -39,10 +39,12 @@ namespace WorkRemind
                 this._remindtimer.Stop();
                 // TODO 可能出现时间差导致timer刚刚运行，更改的内容在clear()之后
                 this._timer.Stop();
-                // 恢复原状
-                grid_MouseRightButtonUp(null, null);
+               
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    // 恢复原状
+                    grid_MouseRightButtonUp(null, null);
+
                     this.btnstart.Content = Properties.Resources.BtnstartBegin;
                     this.texth.Clear();
                     this.textm.Clear();
