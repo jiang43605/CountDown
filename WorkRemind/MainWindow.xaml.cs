@@ -3,6 +3,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace WorkRemind
 {
@@ -39,7 +40,7 @@ namespace WorkRemind
                 this._remindtimer.Stop();
                 // TODO 可能出现时间差导致timer刚刚运行，更改的内容在clear()之后
                 this._timer.Stop();
-               
+
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     // 恢复原状
@@ -191,9 +192,9 @@ namespace WorkRemind
 
         private void SetReadOnly(bool status)
         {
-            this.texth.IsReadOnly = status;
-            this.textm.IsReadOnly = status;
-            this.texts.IsReadOnly = status;
+            this.texth.IsEnabled = !status;
+            this.textm.IsEnabled = !status;
+            this.texts.IsEnabled = !status;
         }
     }
 }
